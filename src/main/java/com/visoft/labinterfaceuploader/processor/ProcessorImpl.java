@@ -47,7 +47,7 @@ public class ProcessorImpl implements Processor {
     @Scheduled(fixedRateString = "${app.jobFrequency}", timeUnit = TimeUnit.MINUTES)
     @Override
     public void process() {
-        log.info("Start processing...{}", new Date());
+        log.info("Start processing...");
 
         for (Path file : files()) {
             fileMover.move(processUploading(file), file);
