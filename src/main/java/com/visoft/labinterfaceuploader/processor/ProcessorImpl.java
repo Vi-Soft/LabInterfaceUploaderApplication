@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -43,10 +44,10 @@ public class ProcessorImpl implements Processor {
         fileMover.prepareFolders();
     }
 
-    @Scheduled(fixedRate = 1, timeUnit = TimeUnit.MINUTES)
+    @Scheduled(fixedRateString = "${app.jobFrequency}", timeUnit = TimeUnit.MINUTES)
     @Override
     public void process() {
-        log.info("Start processing...");
+        log.info("Start processing...{}", new Date());
 
         for (Path file : files()) {
             fileMover.move(processUploading(file), file);
