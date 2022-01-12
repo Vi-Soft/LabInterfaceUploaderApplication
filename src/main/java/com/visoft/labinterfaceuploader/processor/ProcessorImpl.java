@@ -1,5 +1,6 @@
 package com.visoft.labinterfaceuploader.processor;
 
+import com.visoft.labinterfaceuploader.service.ApplicationStopper;
 import com.visoft.labinterfaceuploader.service.FileMover;
 import com.visoft.labinterfaceuploader.service.JwtInitializer;
 import com.visoft.labinterfaceuploader.service.RequestEntityProducer;
@@ -17,7 +18,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -37,6 +37,7 @@ public class ProcessorImpl implements Processor {
     private final FileMover fileMover;
     private final RestTemplate restTemplate;
     private final JwtInitializer jwtInitializer;
+    private final ApplicationStopper applicationStopper;
 
 
     @PostConstruct
@@ -52,6 +53,8 @@ public class ProcessorImpl implements Processor {
         for (Path file : files()) {
             fileMover.move(processUploading(file), file);
         }
+
+        applicationStopper.checkStopAfterFirstJobCondition();
     }
 
     private HttpStatus processUploading(Path file) {
