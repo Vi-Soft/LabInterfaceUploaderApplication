@@ -10,5 +10,5 @@ public interface ApplicationStopper {
     /**
      * Properly stop application
      */
-    void stop();
+    void stop(int exitCode);
 }
