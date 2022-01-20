@@ -1,5 +1,6 @@
 package com.visoft.labinterfaceuploader.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+@RequiredArgsConstructor
 @Log4j2
 @Service
 public class FileMoverImpl implements FileMover {
@@ -22,6 +24,8 @@ public class FileMoverImpl implements FileMover {
 
     @Value("${app.failedFiles}")
     private String failedFiles;
+
+    private final PathComposer pathComposer;
 
 
     @Override
@@ -37,21 +41,13 @@ public class FileMoverImpl implements FileMover {
         final String targetFolder = httpStatus == HttpStatus.OK ? processedFiles : failedFiles;
 
         try {
-            Files.move(file, composeTargetPath(file, targetFolder));
+            Files.move(file, pathComposer.compose(file, targetFolder));
         } catch (IOException e) {
             log.error("Error moving file: '{}'", file);
             return;
         }
 
         log.info("File '{}' moved to '{}' folder", file, targetFolder);
-    }
-
-    private Path composeTargetPath(Path file, String targetFolder) {
-        return Paths.get(
-                file.getParent().toString(),
-                targetFolder,
-                file.getFileName().toString()
-        );
     }
 
     private void createSubDirectory(String subFolder) {
