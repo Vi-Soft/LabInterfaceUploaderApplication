@@ -61,7 +61,7 @@ public class ProcessorImpl implements Processor {
         log.info("Start processing file '{}'", file);
 
         final HttpStatus httpStatus = restTemplate.postForEntity(
-                        serverHost + "/api/upload-results-to-lab-order",
+                        serverHost + "/api/upload-results-to-lab-order/workspace/5ee60d5384c2ac22800bfd6b",
                         requestEntityProducer.uploadResultsToLabOrderRequestEntity(file, jwtInitializer.getJwt()),
                         Void.class
                 )

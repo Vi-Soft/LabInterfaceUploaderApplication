@@ -11,6 +11,6 @@ public class LoginDto {
 
 
     public LoginDto(String username, String password) {
-        this.query =  "query{ login( dto: { email:\"" + username + "\" password:\"" + password + "\" clientType: BROWSER} )  }";
+        this.query =  "query{ login( dto: { email:\"" + username + "\" password:\"" + password + "\" clientType: BROWSER uiLanguage: EN} )  }";
 }
 }
